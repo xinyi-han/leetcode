@@ -17,7 +17,8 @@ class Solution:
         queue.append(root)
         while len(queue) > 0:
             level = list()
-            for i in range(len(queue)):
+            num = len(queue)
+            for i in range(num):
                 node = queue.popleft()
                 if node is not None:
                     level.append(node.val)
