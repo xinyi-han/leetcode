@@ -11,17 +11,16 @@ class TreeNode:
 
 class Solution:
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        self.result = True
 
-        def bfs(node: TreeNode) -> (int, bool):
+        def isBalanced_(node: Optional[TreeNode]) -> int:
             if node is None:
-                return 0, True
-            l, left = bfs(node.left)
-            r, right = bfs(node.right)
-            height = max(l, r) + 1
-            if not left or not right:
-                return height, False
-            elif abs(l - r) > 1:
-                return height, False
-            return height, True
+                return 0
+            l = isBalanced_(node.left)
+            r = isBalanced_(node.right)
+            if abs(l - r) > 1:
+                self.result = False
+            return max(l, r) + 1
 
-        return bfs(root)[-1]
+        isBalanced_(root)
+        return self.result
