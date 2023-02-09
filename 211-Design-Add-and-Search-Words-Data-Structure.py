@@ -1,43 +1,47 @@
+class Trie:
+    def __init__(self):
+        self.children = dict()
+        self.isWord = False
+
+    def add(self, word: str):
+        root = self
+        for char in word:
+            if char not in root.children:
+                root.children[char] = Trie()
+            root = root.children[char]
+        root.isWord = True
+
+    def search(self, word: str) -> bool:
+        root = self
+        for char in word:
+            if char not in root.children:
+                return False
+            root = root.children[char]
+        return root.isWord
+
+
 class WordDictionary:
 
     def __init__(self):
-        self.words = dict()
+        self.root = Trie()
 
     def addWord(self, word: str) -> None:
-        for i, char in enumerate(word):
-            prefix = word[:i]
-            if prefix not in self.words:
-                self.words[prefix] = set()
-            self.words[prefix].add(char)
-        if word not in self.words:
-            self.words[word] = set()
-        self.words[word].add("")
+        self.root.add(word)
 
     def search(self, word: str) -> bool:
-        if word.isalpha():
-            if word not in self.words:
-                return False
-            return "" in self.words[word]
-        dots = [i for i, char in enumerate(word) if char == "."]
 
-        def backtrack(i: int, s: str) -> bool:
-            if i == len(dots):
-                suffix = word[dots[-1] + 1:]
-                if s + suffix in self.words and "" in self.words[s + suffix]:
-                    return True
-                return False
-            if i == 0:
-                j = 0
-            else:
-                j = dots[i - 1] + 1
-            prefix = s + word[j:dots[i]]
-            if prefix not in self.words:
-                return False
-            for char in self.words[prefix]:
-                if char == "":
-                    continue
-                if backtrack(i + 1, prefix + char):
-                    return True
-            return False
+        def dfs(i: int, root: Trie) -> bool:
+            for j in range(i, len(word)):
+                char = word[j]
+                if char != ".":
+                    if char not in root.children:
+                        return False
+                    root = root.children[char]
+                else:
+                    for child in root.children:
+                        if dfs(j + 1, root.children[child]):
+                            return True
+                    return False
+            return root.isWord
 
-        return backtrack(0, "")
+        return dfs(0, self.root)
