@@ -11,20 +11,18 @@ class TreeNode:
 
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        cache = [0, -1] # [index, val]
+        pair = [0, 0] # [index, value]
 
-        def traverse(node: Optional[TreeNode]) -> bool:
+        def inOrder(node: Optional[TreeNode]):
             if node is None:
-                return False
-            if traverse(node.left):
-                return True
-            cache[0] += 1
-            cache[1] = node.val
-            if cache[0] == k:
-                return True
-            if traverse(node.right):
-                return True
-            return False
+                return
+            if pair[0] >= k:
+                return
+            inOrder(node.left)
+            if pair[0] < k:
+                pair[0] += 1
+                pair[1] = node.val
+            inOrder(node.right)
 
-        traverse(root)
-        return cache[-1]
+        inOrder(root)
+        return pair[-1]
