@@ -13,9 +13,8 @@ class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
         if len(preorder) == 0:
             return None
-        val = preorder[0]
-        index = inorder.index(val)
-        left = self.buildTree(preorder[1:index+1], inorder[:index])
-        right = self.buildTree(preorder[index+1:], inorder[index+1:])
-        node = TreeNode(val, left, right)
+        i = inorder.index(preorder[0])
+        l = self.buildTree(preorder[1:i+1], inorder[:i])
+        r = self.buildTree(preorder[i+1:], inorder[i+1:])
+        node = TreeNode(preorder[0], l, r)
         return node
