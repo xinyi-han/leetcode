@@ -1,20 +1,29 @@
 class Trie:
 
     def __init__(self):
-        self.trie = dict()
+        self.children = dict()
+        self.isWord = False
 
     def insert(self, word: str) -> None:
-        for i, char in enumerate(word):
-            substring = word[:i]
-            if substring not in self.trie:
-                self.trie[substring] = set()
-            self.trie[substring].add(char)
-        if word not in self.trie:
-            self.trie[word] = set()
-        self.trie[word].add("")
+        root = self
+        for char in word:
+            if char not in root.children:
+                root.children[char] = Trie()
+            root = root.children[char]
+        root.isWord = True
 
     def search(self, word: str) -> bool:
-        return word in self.trie and "" in self.trie[word]
+        root = self
+        for char in word:
+            if char not in root.children:
+                return False
+            root = root.children[char]
+        return root.isWord
 
     def startsWith(self, prefix: str) -> bool:
-        return prefix in self.trie
+        root = self
+        for char in prefix:
+            if char not in root.children:
+                return False
+            root = root.children[char]
+        return True
