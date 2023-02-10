@@ -11,16 +11,16 @@ class TreeNode:
 
 class Solution:
     def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
-        queue = list()
-        queue.append(root)
-        leftMost = None
-        while len(queue) > 0:
-            level = list()
-            leftMost = queue[0].val
-            for node in queue:
-                if node.left is not None:
-                    level.append(node.left)
-                if node.right is not None:
-                    level.append(node.right)
-            queue = level
-        return leftMost
+        pair = [0, root.val] # [maxHeight, value]
+
+        def dfs(node: Optional[TreeNode], height: int):
+            if node is None:
+                return
+            if height > pair[0]:
+                pair[0] = height
+                pair[1] = node.val
+            dfs(node.left, height + 1)
+            dfs(node.right, height + 1)
+
+        dfs(root, 0)
+        return pair[-1]
