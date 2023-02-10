@@ -14,23 +14,24 @@ class Solution:
         """
         Do not return anything, modify root in-place instead.
         """
-        stack = list()
-
-        def dfs(node: TreeNode):
-            if node is None:
-                return
-            if node.right is not None:
-                stack.append(node.right)
-            if node.left is not None:
-                node.right = node.left
-                node.left = None
-            else:
-                if len(stack) > 0:
-                    node.right = stack.pop()
-                else:
-                    node.right = None
-            dfs(node.right)
-
         if root is None:
             return None
-        dfs(root)
+        stack = list()
+        node = root
+        while node is not None:
+            if node.left is None and node.right is None:
+                if len(stack) == 0:
+                    break
+                node.right = stack.pop()
+                node = node.right
+            elif node.left is None:
+                node = node.right
+            elif node.right is None:
+                node.right = node.left
+                node.left = None
+                node = node.right
+            else:
+                stack.append(node.right)
+                node.right = node.left
+                node.left = None
+                node = node.right
