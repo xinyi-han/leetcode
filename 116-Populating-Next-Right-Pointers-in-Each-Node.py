@@ -3,7 +3,7 @@ from typing import Optional
 
 # Definition for a Node.
 class Node:
-    def __init__(self, val: int = 0, left=None, right=None, next=None):
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
         self.val = val
         self.left = left
         self.right = right
@@ -12,19 +12,12 @@ class Node:
 
 class Solution:
     def connect(self, root: Optional[Node]) -> Optional[Node]:
-        stack = list()
-        stack.append(root)
-        while len(stack) > 0:
-            level = list()
-            prev = None
-            for i in range(len(stack)):
-                node = stack.pop()
-                if node is None:
-                    continue
-                level.append(node.right)
-                level.append(node.left)
-                node.next = prev
-                prev = node
-            level.reverse()
-            stack = level
+        if root is None:
+            return None
+        if root.left is not None:
+            root.left.next = root.right
+        if root.right is not None and root.next is not None:
+            root.right.next = root.next.left
+        self.connect(root.left)
+        self.connect(root.right)
         return root
