@@ -11,19 +11,21 @@ class TreeNode:
 
 class Solution:
     def allPossibleFBT(self, n: int) -> List[Optional[TreeNode]]:
+        if n % 2 == 0:
+            return []
 
-        def buildTree(num: int) -> List[Optional[TreeNode]]:
-            if num == 1:
+        def buildTree(k: int) -> List[Optional[TreeNode]]:
+            if k == 1:
                 return [TreeNode()]
-            num -= 1
-            trees = list()
-            for i in range(1, num, 2):
+            nodes = list()
+            for i in range(1, k, 2):
+                j = k - 1 - i
                 ls = buildTree(i)
-                rs = buildTree(num - i)
+                rs = buildTree(j)
                 for l in ls:
                     for r in rs:
-                        node = TreeNode(val=0, left=l, right=r)
-                        trees.append(node)
-            return trees
+                        node = TreeNode(0, l, r)
+                        nodes.append(node)
+            return nodes
 
         return buildTree(n)
