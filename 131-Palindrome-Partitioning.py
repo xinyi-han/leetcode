@@ -11,7 +11,7 @@ class Solution:
                 output.append(list(stack))
                 return
             for j in range(i, len(s)):
-                if self.isPalindrome(s, i, j):
+                if self.isPalindrome(s[i:j+1]):
                     stack.append(s[i:j+1])
                     dfs(j + 1)
                     stack.pop()
@@ -19,10 +19,12 @@ class Solution:
         dfs(0)
         return output
 
-    def isPalindrome(self, s: str, l: int, r: int) -> bool:
-        while l < r:
-            if s[l] != s[r]:
+    def isPalindrome(self, s: str) -> bool:
+        i = 0
+        j = len(s) - 1
+        while i < j:
+            if s[i] != s[j]:
                 return False
-            l += 1
-            r -= 1
+            i += 1
+            j -= 1
         return True
