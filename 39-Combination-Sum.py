@@ -3,15 +3,22 @@ from typing import List
 
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        combination = [list() for _ in range(target + 1)]
-        for candidate in candidates:
-            for i, sum in enumerate(combination):
-                if candidate > i:
-                    continue
-                elif candidate == i:
-                    sum.append([candidate])
-                else:
-                    lst = combination[i - candidate]
-                    for l in lst:
-                        sum.append(l + [candidate])
-        return combination[-1]
+        candidates.sort()
+        output = list()
+        stack = list()
+
+        def dfs(i: int, sum: int):
+            if i == len(candidates):
+                return
+            if sum == target:
+                output.append(list(stack))
+            if sum >= target:
+                return
+            num = candidates[i]
+            stack.append(num)
+            dfs(i, sum + num)
+            stack.pop()
+            dfs(i + 1, sum)
+
+        dfs(0, 0)
+        return output
