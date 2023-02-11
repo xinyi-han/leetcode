@@ -3,27 +3,25 @@ from typing import List
 
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
-        if len(s) > 12:
-            return []
         output = list()
+        stack = list()
+        if len(s) < 4 or len(s) > 12:
+            return output
 
-        def dfs(stack: List[str], substring: str):
+        def dfs(i: int):
             if len(stack) == 4:
-                if len(substring) == 0:
-                    ip = ".".join(stack)
-                    output.append(ip)
+                if i == len(s):
+                    output.append(".".join(stack))
                 return
-            if len(substring) == 0:
-                return
-            for i in range(1, min(4, len(substring) + 1)):
-                subAddress = substring[:i]
-                if i == 3 and int(subAddress) > 255:
+            for j in range(i, min(len(s), i + 3)):
+                section = s[i:j+1]
+                if len(section) > 1 and section[0] == "0":
                     break
-                elif i > 1 and substring[0] == "0":
+                if len(section) == 3 and int(section) > 255:
                     break
-                stack.append(subAddress)
-                dfs(stack, substring[i:])
+                stack.append(section)
+                dfs(j + 1)
                 stack.pop()
 
-        dfs(list(), s)
+        dfs(0)
         return output
