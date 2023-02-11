@@ -4,15 +4,14 @@ class Solution:
 
         def dfs(i: int) -> bool:
             if i == len(s):
-                return len(stack) > 1
+                return True if len(stack) > 1 else False # split s into two or more non-empty substrings
             for j in range(i, len(s)):
-                if len(stack) == 0 or stack[-1] - 1 == int(s[i:j+1]):
-                    stack.append(int(s[i:j+1]))
+                num = int(s[i:j+1])
+                if len(stack) == 0 or num == stack[-1] - 1:
+                    stack.append(num)
                     if dfs(j + 1):
                         return True
                     stack.pop()
-                elif stack[-1] <= int(s[i:j+1]):
-                    break
             return False
 
         return dfs(0)
