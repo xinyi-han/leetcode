@@ -5,28 +5,27 @@ class Solution:
     def findItinerary(self, tickets: List[List[str]]) -> List[str]:
         tickets.sort()
         hashMap = dict()
-        for f, t in tickets: # f: from, t: to
-            if f not in hashMap:
-                hashMap[f] = list()
-            hashMap[f].append([t, False])
-        output = ['JFK']
+        for departure, arrival in tickets:
+            if departure not in hashMap:
+                hashMap[departure] = list()
+            hashMap[departure].append([arrival, True])
+        stack = ["JFK"]
 
-        def dfs(airportF: str) -> bool:
-            if len(output) == len(tickets) + 1:
+        def dfs(airport: str) -> bool:
+            if len(stack) == len(tickets) + 1:
                 return True
-            if airportF not in hashMap:
+            if airport not in hashMap:
                 return False
-            for ticket in hashMap[airportF]:
-                if ticket[1]:
+            for destination in hashMap[airport]:
+                if not destination[1]:
                     continue
-                airportT = ticket[0]
-                ticket[1] = True
-                output.append(airportT)
-                if dfs(airportT):
+                destination[1] = False
+                stack.append(destination[0])
+                if dfs(destination[0]):
                     return True
-                ticket[1] = False
-                output.pop()
+                stack.pop()
+                destination[1] = True
             return False
 
-        dfs('JFK')
-        return output
+        dfs("JFK")
+        return stack
