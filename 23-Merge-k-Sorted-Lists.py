@@ -1,5 +1,5 @@
-from typing import List, Optional
 import heapq
+from typing import List, Optional
 
 
 # Definition for singly-linked list.
@@ -10,23 +10,20 @@ class ListNode:
 
 
 class Solution:
-    def __init__(self):
-        self.heap = list()
-        self.count = 0
-
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        for node in lists:
-            if node is not None:
-                heapq.heappush(self.heap, (node.val, self.count, node))
-                self.count += 1
+        nodes = list()
+        for i, node in enumerate(lists):
+            if node is None:
+                continue
+            heapq.heappush(nodes, (node.val, i, node))
         dummy = ListNode()
-        head = dummy
-        while len(self.heap) > 0:
-            val, count, node = heapq.heappop(self.heap)
-            head.next = node
-            head = head.next
-            node = node.next
-            if node is not None:
-                heapq.heappush(self.heap, (node.val, count, node))
-        head.next = None
+        curr = dummy
+        while len(nodes) > 0:
+            val, i, node = heapq.heappop(nodes)
+            curr.next = node
+            curr = curr.next
+            if node.next is not None:
+                node = node.next
+                heapq.heappush(nodes, (node.val, i, node))
+        curr.next = None
         return dummy.next
