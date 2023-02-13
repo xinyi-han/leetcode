@@ -12,7 +12,15 @@ class Solution:
     def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if head is None or head.next is None:
             return head
-        node = head.next
-        head.next = self.swapPairs(head.next.next)
-        node.next = head
-        return node
+        dummy = ListNode()
+        prev = dummy
+        curr = head
+        while curr is not None and curr.next is not None:
+            prev.next = curr.next
+            prev = prev.next
+            next = prev.next
+            prev.next = curr
+            prev = prev.next
+            curr = next
+        prev.next = curr
+        return dummy.next
