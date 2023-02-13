@@ -10,17 +10,16 @@ class ListNode:
 
 class Solution:
     def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        node = head
-        nodes = list()
+        curr = head
         for i in range(k):
-            if node is None:
+            if curr is None:
                 return head
-            nodes.append(node)
-            node = node.next
-        dummy = ListNode()
-        head = dummy
-        while len(nodes) > 0:
-            head.next = nodes.pop()
-            head = head.next
-        head.next = self.reverseKGroup(node, k)
-        return dummy.next
+            curr = curr.next
+        prev = self.reverseKGroup(curr, k)
+        curr = head
+        for i in range(k):
+            next = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next
+        return prev
