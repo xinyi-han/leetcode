@@ -10,20 +10,18 @@ class ListNode:
 
 class Solution:
     def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
-        if head is None:
-            return None
-        left = ListNode()
-        node1 = left
-        right = ListNode()
-        node2 = right
+        dummy1 = ListNode()
+        dummy2 = ListNode()
+        small = dummy1
+        big = dummy2
         while head is not None:
             if head.val < x:
-                node1.next = head
-                node1 = node1.next
+                small.next = head
+                small = small.next
             else:
-                node2.next = head
-                node2 = node2.next
+                big.next = head
+                big = big.next
             head = head.next
-        node2.next = None
-        node1.next = right.next
-        return left.next
+        big.next = None
+        small.next = dummy2.next
+        return dummy1.next
