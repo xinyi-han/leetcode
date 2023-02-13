@@ -10,14 +10,15 @@ class ListNode:
 
 class Solution:
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if head is None:
-            return None
-        newHead = head
-        node = newHead
-        while head is not None:
-            if head.val != node.val:
-                node.next = head
-                node = node.next
-            head = head.next
-        node.next = None
-        return newHead
+        if head is None or head.next is None:
+            return head
+        dummy = ListNode(0, head)
+        prev = head
+        curr = head
+        while curr is not None:
+            if prev.val != curr.val:
+                prev.next = curr
+                prev = prev.next
+            curr = curr.next
+        prev.next = None
+        return dummy.next
