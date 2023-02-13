@@ -11,33 +11,27 @@ class ListNode:
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
         dummy = ListNode()
-        node = dummy
+        curr = dummy
         carry = 0
         while l1 is not None and l2 is not None:
             val = l1.val + l2.val + carry
             carry = val // 10
-            val = val % 10
-            node.next = ListNode(val)
-            node = node.next
+            val %= 10
+            curr.next = ListNode(val)
+            curr = curr.next
             l1 = l1.next
             l2 = l2.next
-        if l1 is None and l2 is None:
-            if carry != 0:
-                node.next = ListNode(carry)
+        if l1 is not None:
+            l = l1
         else:
-            l = None
-            if l1 is None:
-                l = l2
-            elif l2 is None:
-                l = l1
-            while l is not None:
-                val = l.val + carry
-                carry = val // 10
-                val = val % 10
-                node.next = ListNode(val)
-                node = node.next
-                l = l.next
-            if carry != 0:
-                node.next = ListNode(carry)
-
+            l = l2
+        while l is not None:
+            val = l.val + carry
+            carry = val // 10
+            val %= 10
+            curr.next = ListNode(val)
+            curr = curr.next
+            l = l.next
+        if carry != 0:
+            curr.next = ListNode(carry)
         return dummy.next
