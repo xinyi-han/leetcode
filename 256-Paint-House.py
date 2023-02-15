@@ -11,12 +11,12 @@ from typing import List
 # on… Find the minimum cost to paint all houses.
 class Solution:
     def minCost(self, costs: List[List[int]]) -> int:
-        prev = [0 for _ in range(3)]
-        for r, b, g in costs:
-            curr = [r, b, g]
-            curr[0] += min(prev[1:])
-            curr[1] += min(prev[0], prev[2])
-            curr[2] += min(prev[:-1])
+        prev = costs[-1]
+        for r,g,b in costs[-2::-1]:
+            curr = list()
+            curr.append(r + min(prev[1:]))
+            curr.append(g + min(prev[0], prev[-1]))
+            curr.append(b + min(prev[:-1]))
             prev = curr
         return min(prev)
 
