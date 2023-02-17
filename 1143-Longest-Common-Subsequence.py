@@ -6,5 +6,5 @@ class Solution:
                 if text1[i] == text2[j]:
                     cache[i][j] = 1 + cache[i+1][j+1]
                 else:
-                    cache[i][j] = max(cache[i+1][j], cache[i][j+1])
+                    cache[i][j] = max(cache[i][j+1], cache[i+1][j])
         return cache[0][0]
