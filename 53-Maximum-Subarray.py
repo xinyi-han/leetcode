@@ -3,12 +3,8 @@ from typing import List
 
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        maxSum = nums[0]
-        sum = nums[0]
-        for num in nums[1:]:
-            if sum + num > num:
-                sum += num
-            else:
-                sum = num
-            maxSum = max(maxSum, sum)
-        return maxSum
+        output = nums[-1]
+        for i in range(len(nums) - 2, -1, -1):
+            nums[i] = max(nums[i], nums[i] + nums[i+1])
+            output = max(output, nums[i])
+        return output
