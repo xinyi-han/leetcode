@@ -9,10 +9,33 @@ class TreeNode:
         self.right = right
 
 
+# Recursive
 class Solution:
     def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
-        if root is None:
-            return []
-        l = self.inorderTraversal(root.left)
-        r = self.inorderTraversal(root.right)
-        return l + [root.val] + r
+        output = list()
+
+        def dfs(node: Optional[TreeNode]):
+            if node is None:
+                return
+            dfs(node.left)
+            output.append(node.val)
+            dfs(node.right)
+
+        dfs(root)
+        return output
+
+
+# Iterative
+class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        output = list()
+        stack = list()
+        node = root
+        while node is not None or len(stack) > 0:
+            while node is not None:
+                stack.append(node)
+                node = node.left
+            node = stack.pop()
+            output.append(node.val)
+            node = node.right
+        return output
