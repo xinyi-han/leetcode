@@ -3,8 +3,7 @@ from typing import List
 
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        output = list()
-        stack = list()
+        output, stack = list(),list()
 
         def dfs(i: int):
             if i == len(nums):
