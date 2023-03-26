@@ -4,8 +4,7 @@ from typing import List
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
         nums.sort()
-        output = list()
-        stack = list()
+        output, stack = list(), list()
 
         def dfs(i: int):
             if i == len(nums):
@@ -15,7 +14,7 @@ class Solution:
             dfs(i + 1)
             stack.pop()
             j = 0
-            while i + j < len(nums) and nums[i + j] == nums[i]:
+            while i + j < len(nums) and nums[i] == nums[i + j]:
                 j += 1
             dfs(i + j)
 
