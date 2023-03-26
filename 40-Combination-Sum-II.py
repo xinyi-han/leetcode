@@ -10,15 +10,13 @@ class Solution:
         def dfs(i: int, sum: int):
             if sum == target:
                 output.append(list(stack))
+            if sum >= target or i == len(candidates):
                 return
-            if sum > target or i == len(candidates):
-                return
-            num = candidates[i]
-            stack.append(num)
-            dfs(i + 1, sum + num)
+            stack.append(candidates[i])
+            dfs(i + 1, sum + candidates[i])
             stack.pop()
             j = 0
-            while i + j < len(candidates) and candidates[i+j] == num:
+            while i + j < len(candidates) and candidates[i] == candidates[i + j]:
                 j += 1
             dfs(i + j, sum)
 
