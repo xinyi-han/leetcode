@@ -3,11 +3,11 @@ from typing import List
 
 class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
-        output = list()
-        stack = list()
         hashMap = dict()
         for num in nums:
             hashMap[num] = hashMap.get(num, 0) + 1
+        output = list()
+        stack = list()
 
         def dfs():
             if len(stack) == len(nums):
