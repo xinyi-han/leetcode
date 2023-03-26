@@ -14,8 +14,6 @@ class Solution:
         """
         Do not return anything, modify root in-place instead.
         """
-        if root is None:
-            return None
         stack = list()
         node = root
         while node is not None:
@@ -23,15 +21,12 @@ class Solution:
                 if len(stack) == 0:
                     break
                 node.right = stack.pop()
-                node = node.right
-            elif node.left is None:
-                node = node.right
-            elif node.right is None:
-                node.right = node.left
-                node.left = None
-                node = node.right
-            else:
+            elif node.left is not None and node.right is not None:
                 stack.append(node.right)
                 node.right = node.left
                 node.left = None
-                node = node.right
+            elif node.right is None:
+                node.right = node.left
+                node.left = None
+            node = node.right
+        return root
