@@ -8,15 +8,12 @@ class Solution:
         stack = list()
 
         def dfs(i: int, sum: int):
-            if i == len(candidates):
-                return
             if sum == target:
                 output.append(list(stack))
-            if sum >= target:
+            if sum >= target or i >= len(candidates):
                 return
-            num = candidates[i]
-            stack.append(num)
-            dfs(i, sum + num)
+            stack.append(candidates[i])
+            dfs(i, sum + candidates[i])
             stack.pop()
             dfs(i + 1, sum)
 
