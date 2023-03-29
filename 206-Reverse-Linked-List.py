@@ -26,14 +26,16 @@ class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         dummy = ListNode()
 
-        def dfs(node: Optional[ListNode]) -> Optional[ListNode]:
-            if node is None:
-                return dummy
+        def dfs(node: ListNode) -> Optional[ListNode]:
+            if node.next is None:
+                dummy.next = node
+                return node
             prev = dfs(node.next)
             prev.next = node
             return node
 
-        dfs(head)
-        if head is not None:
-            head.next = None
+        if head is None:
+            return head
+        tail = dfs(head)
+        tail.next = None
         return dummy.next
