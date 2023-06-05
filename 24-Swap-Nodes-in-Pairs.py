@@ -13,14 +13,13 @@ class Solution:
         if head is None or head.next is None:
             return head
         dummy = ListNode()
-        prev = dummy
-        curr = head
+        prev, curr = dummy, head
         while curr is not None and curr.next is not None:
             prev.next = curr.next
             prev = prev.next
             next = prev.next
             prev.next = curr
-            prev = prev.next
+            prev = curr
             curr = next
         prev.next = curr
         return dummy.next
