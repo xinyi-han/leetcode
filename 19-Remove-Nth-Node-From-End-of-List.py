@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional
 
 
 # Definition for singly-linked list.
@@ -10,15 +10,14 @@ class ListNode:
 
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-
-        def dfs(node: Optional[ListNode]) -> Tuple[Optional[ListNode], int]:
-            if node is None:
-                return None, 0
-            next, count = dfs(node.next)
-            if count + 1 == n:
-                return next, count + 1
-            else:
-                node.next = next
-                return node, count + 1
-
-        return dfs(head)[0]
+        dummy = ListNode(next=head)
+        slow, fast = dummy, dummy
+        i = 0
+        while i < n + 1:
+            fast = fast.next
+            i += 1
+        while fast is not None:
+            slow = slow.next
+            fast = fast.next
+        slow.next = slow.next.next
+        return dummy.next
