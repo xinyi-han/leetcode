@@ -10,25 +10,19 @@ class ListNode:
 
 class Solution:
     def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        if head is None or head.next is None:
-            return head
-        curr = head
-        i = 0
-        while curr is not None:
+        if head is None:
+            return None
+        node = head
+        i = 1
+        while node.next is not None:
             i += 1
-            curr = curr.next
+            node = node.next
+        node.next = head
         k %= i
-        if k == 0:
-            return head
-        dummy = ListNode(0, head)
-        slow = dummy
-        fast = head
-        for j in range(k - 1):
-            fast = fast.next
-        while fast.next is not None:
-            slow = slow.next
-            fast = fast.next
-        head = slow.next
-        slow.next = None
-        fast.next = dummy.next
-        return head
+        j = 0
+        while j < i - k - 1:
+            head = head.next
+            j += 1
+        node = head.next
+        head.next = None
+        return node
