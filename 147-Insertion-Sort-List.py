@@ -1,5 +1,4 @@
 from typing import Optional
-import heapq
 
 
 # Definition for singly-linked list.
@@ -10,20 +9,16 @@ class ListNode:
 
 
 class Solution:
-    def __init__(self):
-        self.heap = list()
-        self.count = 0
-
     def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        while head is not None:
-            heapq.heappush(self.heap, (head.val, self.count, head))
-            self.count += 1
-            head = head.next
         dummy = ListNode()
-        curr = dummy
-        while len(self.heap) > 0:
-            _, _, node = heapq.heappop(self.heap)
-            curr.next = node
-            curr = curr.next
-        curr.next = None
+        while head is not None:
+            node = head
+            head = head.next
+            prev = dummy
+            curr = dummy.next
+            while curr is not None and curr.val <= node.val:
+                prev = curr
+                curr = curr.next
+            prev.next = node
+            node.next = curr
         return dummy.next

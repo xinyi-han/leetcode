@@ -12,13 +12,17 @@ class Solution:
     def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
         if head is None:
             return None
-        nodes = list()
-        while head is not None:
-            nodes.append(head)
+        node = head
+        i = 1
+        while node.next is not None:
+            i += 1
+            node = node.next
+        node.next = head
+        k %= i
+        j = 0
+        while j < i - k - 1:
             head = head.next
-        k = k % len(nodes)
-        if k == 0:
-            return nodes[0]
-        nodes[-(k + 1)].next = None
-        nodes[-1].next = nodes[0]
-        return nodes[-k]
+            j += 1
+        node = head.next
+        head.next = None
+        return node

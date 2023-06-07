@@ -10,15 +10,23 @@ class ListNode:
 
 class Solution:
     def isPalindrome(self, head: Optional[ListNode]) -> bool:
-        vals = list()
-        while head is not None:
-            vals.append(head.val)
-            head = head.next
-        i = 0
-        j = len(vals) - 1
-        while i < j:
-            if vals[i] != vals[j]:
+        dummy = ListNode(0, head)
+        slow = dummy
+        fast = dummy
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+        prev = None
+        curr = slow.next
+        slow.next = None
+        while curr is not None:
+            next = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next
+        while head is not None and prev is not None:
+            if head.val != prev.val:
                 return False
-            i += 1
-            j -= 1
+            head = head.next
+            prev = prev.next
         return True

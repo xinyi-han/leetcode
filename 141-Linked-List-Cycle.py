@@ -10,10 +10,10 @@ class ListNode:
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        nodes = set()
+        hashSet = set()
         while head is not None:
-            if head in nodes:
+            if head in hashSet:
                 return True
-            nodes.add(head)
+            hashSet.add(head)
             head = head.next
         return False

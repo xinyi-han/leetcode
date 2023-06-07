@@ -10,10 +10,13 @@ class ListNode:
 
 class Solution:
     def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
-        if head is None:
-            return None
-        next = self.removeElements(head.next, val)
-        if head.val == val:
-            return next
-        head.next = next
-        return head
+        dummy = ListNode()
+        prev = dummy
+        curr = head
+        while curr is not None:
+            if curr.val != val:
+                prev.next = curr
+                prev = prev.next
+            curr = curr.next
+        prev.next = None
+        return dummy.next

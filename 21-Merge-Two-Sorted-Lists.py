@@ -21,7 +21,8 @@ class Solution:
                 list2 = list2.next
             node = node.next
         if list1 is None:
-            node.next = list2
-        elif list2 is None:
-            node.next = list1
+            l = list2
+        else:
+            l = list1
+        node.next = l
         return dummy.next

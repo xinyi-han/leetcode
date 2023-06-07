@@ -16,28 +16,22 @@ class Solution:
         while l1 is not None and l2 is not None:
             val = l1.val + l2.val + carry
             carry = val // 10
-            val = val % 10
-            node.next = ListNode(val)
+            val %= 10
+            node.next = ListNode(val=val)
             node = node.next
             l1 = l1.next
             l2 = l2.next
-        if l1 is None and l2 is None:
-            if carry != 0:
-                node.next = ListNode(carry)
+        if l1 is None:
+            l = l2
         else:
-            l = None
-            if l1 is None:
-                l = l2
-            elif l2 is None:
-                l = l1
-            while l is not None:
-                val = l.val + carry
-                carry = val // 10
-                val = val % 10
-                node.next = ListNode(val)
-                node = node.next
-                l = l.next
-            if carry != 0:
-                node.next = ListNode(carry)
-
+            l = l1
+        while l is not None:
+            val = l.val + carry
+            carry = val // 10
+            val %= 10
+            node.next = ListNode(val=val)
+            node = node.next
+            l = l.next
+        if carry != 0:
+            node.next = ListNode(val=carry)
         return dummy.next

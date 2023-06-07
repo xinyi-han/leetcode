@@ -10,23 +10,16 @@ class ListNode:
 
 class Solution:
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        nodes = list()
-        while head is not None:
-            if len(nodes) == 0:
-                nodes.append(head)
-                head = head.next
-            else:
-                if head.val == nodes[-1].val:
-                    while head is not None and head.val == nodes[-1].val:
-                        head = head.next
-                    nodes.pop()
-                else:
-                    nodes.append(head)
-                    head = head.next
-        dummy = ListNode()
-        node = dummy
-        for n in nodes:
-            node.next = n
-            node = node.next
-        node.next = None
-        return dummy.next
+        hashMap = dict()
+
+        def dfs(node: Optional[ListNode]) -> Optional[ListNode]:
+            if node is None:
+                return None
+            hashMap[node.val] = hashMap.get(node.val, 0) + 1
+            next = dfs(node.next)
+            if hashMap[node.val] > 1:
+                return next
+            node.next = next
+            return node
+
+        return dfs(head)
