@@ -18,17 +18,16 @@ class TreeNode:
 
 class Solution:
     def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
-        nodes = list()
+        vals = list()
         while head is not None:
-            node = TreeNode(head.val)
-            nodes.append(node)
+            vals.append(head.val)
             head = head.next
-        return self.buildTree(nodes)
+        return self.buildTree(vals)
 
-    def buildTree(self, nodes: List[TreeNode]) -> Optional[TreeNode]:
-        if len(nodes) == 0:
+    def buildTree(self, nums: List[int]) -> Optional[TreeNode]:
+        if len(nums) == 0:
             return None
-        mid = (0 + len(nodes) - 1) // 2
-        nodes[mid].left = self.buildTree(nodes[:mid])
-        nodes[mid].right = self.buildTree(nodes[mid+1:])
-        return nodes[mid]
+        mid = len(nums) // 2
+        left = self.buildTree(nums[:mid])
+        right = self.buildTree(nums[mid+1:])
+        return TreeNode(nums[mid], left, right)

@@ -13,8 +13,8 @@ class Solution:
     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
         if len(nums) == 0:
             return None
-        mid = (0 + len(nums) - 1) // 2
+        mid = len(nums) // 2
         left = self.sortedArrayToBST(nums[:mid])
-        right = self.sortedArrayToBST(nums[mid + 1:])
+        right = self.sortedArrayToBST(nums[mid+1:])
         node = TreeNode(nums[mid], left, right)
         return node

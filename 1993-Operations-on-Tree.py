@@ -1,16 +1,17 @@
 from typing import List
+from collections import deque
 
 
 class LockingTree:
 
     def __init__(self, parent: List[int]):
         self.parent = parent
-        self.locked = [None for _ in self.parent]
+        self.locked = [None for _ in parent]
         self.children = dict()
-        for c, p in enumerate(parent):
-            if p not in self.children:
-                self.children[p] = list()
-            self.children[p].append(c)
+        for i, child in enumerate(parent):
+            if child not in self.children:
+                self.children[child] = list()
+            self.children[child].append(i)
 
     def lock(self, num: int, user: int) -> bool:
         if self.locked[num] is not None:
@@ -25,28 +26,23 @@ class LockingTree:
         return False
 
     def upgrade(self, num: int, user: int) -> bool:
-        curr = num
-        while True:
-            if self.locked[curr] is not None:
+        ancestor = num
+        while ancestor != -1:
+            if self.locked[ancestor] is not None:
                 return False
-            curr = self.parent[curr]
-            if curr == -1:
-                break
-        if num not in self.children:
-            return False
-        locked = list()
-        queue = list(self.children[num])
+            ancestor = self.parent[ancestor]
+        descendant = num
+        queue = deque()
+        queue.append(descendant)
+        count = 0
         while len(queue) > 0:
-            children = list()
-            for child in queue:
+            node = queue.popleft()
+            for child in self.children.get(node, []):
                 if self.locked[child] is not None:
-                    locked.append(child)
-                if child in self.children:
-                    children.extend(self.children[child])
-            queue = children
-        if len(locked) == 0:
+                    count += 1
+                    self.locked[child] = None
+                queue.append(child)
+        if count == 0:
             return False
-        for node in locked:
-            self.locked[node] = None
         self.locked[num] = user
         return True

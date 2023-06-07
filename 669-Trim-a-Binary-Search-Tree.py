@@ -13,17 +13,11 @@ class Solution:
     def trimBST(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
         if root is None:
             return None
+        if root.val > high:
+            return self.trimBST(root.left, low, high)
         if root.val < low:
             return self.trimBST(root.right, low, high)
-        elif root.val > high:
-            return self.trimBST(root.left, low, high)
-        if root.val == low:
-            root.left = None
-            root.right = self.trimBST(root.right, low, high)
-        elif root.val == high:
-            root.right = None
-            root.left = self.trimBST(root.left, low, high)
-        elif low < root.val < high:
+        else:
             root.left = self.trimBST(root.left, low, high)
             root.right = self.trimBST(root.right, low, high)
-        return root
+            return root

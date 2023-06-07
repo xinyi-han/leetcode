@@ -17,20 +17,21 @@ class Solution:
                 return True
             elif node1 is None or node2 is None:
                 return False
+            elif node1.val != node2.val:
+                return False
             else:
-                l = isSame(node1.left, node2.left)
-                r = isSame(node1.right, node2.right)
-                return l and r and node1.val == node2.val
+                return isSame(node1.left, node2.left) and isSame(node1.right, node2.right)
 
-        stack = list()
-        stack.append(root)
-        while len(stack) > 0:
-            node = stack.pop()
-            if node.left is not None:
-                stack.append(node.left)
-            if node.right is not None:
-                stack.append(node.right)
+        def dfs(node: Optional[TreeNode]) -> bool:
+            if node is None:
+                return False
             if node.val == subRoot.val:
                 if isSame(node, subRoot):
                     return True
-        return False
+            if dfs(node.left):
+                return True
+            if dfs(node.right):
+                return True
+            return False
+
+        return dfs(root)

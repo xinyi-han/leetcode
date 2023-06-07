@@ -13,22 +13,18 @@ class BSTIterator:
 
     def __init__(self, root: Optional[TreeNode]):
         self.stack = list()
-        self.traverse(root)
-        self.pointer = 0
+        while root is not None:
+            self.stack.append(root)
+            root = root.left
+        self.curr = None
 
     def next(self) -> int:
-        val = self.stack[self.pointer]
-        self.pointer += 1
-        return val
+        self.curr = self.stack.pop()
+        root = self.curr.right
+        while root is not None:
+            self.stack.append(root)
+            root = root.left
+        return self.curr.val
 
     def hasNext(self) -> bool:
-        if self.pointer < len(self.stack):
-            return True
-        return False
-
-    def traverse(self, node: Optional[TreeNode]):
-        if node is None:
-            return
-        self.traverse(node.left)
-        self.stack.append(node.val)
-        self.traverse(node.right)
+        return len(self.stack) > 0

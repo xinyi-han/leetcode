@@ -14,8 +14,8 @@ class Solution:
         if len(preorder) == 0:
             return None
         val = preorder[0]
-        index = inorder.index(val)
-        left = self.buildTree(preorder[1:index+1], inorder[:index])
-        right = self.buildTree(preorder[index+1:], inorder[index+1:])
+        i = inorder.index(val)
+        left = self.buildTree(preorder[1:i+1], inorder[:i])
+        right = self.buildTree(preorder[i+1:], inorder[i+1:])
         node = TreeNode(val, left, right)
         return node

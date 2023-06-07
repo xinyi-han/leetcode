@@ -11,20 +11,20 @@ class TreeNode:
 
 class Solution:
     def sumNumbers(self, root: Optional[TreeNode]) -> int:
-        self.sum = 0
+        nums = list()
 
-        def dfs(pathSum: str, node: TreeNode):
-            pathSum += str(node.val)
+        def dfs(node: Optional[TreeNode], num: str):
             if node.left is None and node.right is None:
-                self.sum += int(pathSum)
+                nums.append(int(num) * 10 + node.val)
                 return
-            elif node.left is None:
-                dfs(pathSum, node.right)
+            num += str(node.val)
+            if node.left is None:
+                dfs(node.right, num)
             elif node.right is None:
-                dfs(pathSum, node.left)
+                dfs(node.left, num)
             else:
-                dfs(pathSum, node.left)
-                dfs(pathSum, node.right)
+                dfs(node.left, num)
+                dfs(node.right, num)
 
-        dfs("", root)
-        return self.sum
+        dfs(root, "0")
+        return sum(nums)

@@ -12,21 +12,19 @@ class TreeNode:
 class Solution:
     def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
         output = list()
-
-        def bfs(prevQueue: List[TreeNode]):
-            if len(prevQueue) == 0:
-                return
-            currQueue = list()
+        if root is None:
+            return output
+        queue = [root]
+        while len(queue) > 0:
+            level = list()
             vals = list()
-            for node in prevQueue:
-                if node is None:
-                    continue
+            for node in queue:
                 vals.append(node.val)
-                currQueue.append(node.left)
-                currQueue.append(node.right)
-            bfs(currQueue)
+                if node.left is not None:
+                    level.append(node.left)
+                if node.right is not None:
+                    level.append(node.right)
+            queue = level
             if len(vals) > 0:
                 output.append(vals)
-
-        bfs([root])
-        return output
+        return output[::-1]

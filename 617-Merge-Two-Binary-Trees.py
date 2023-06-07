@@ -18,8 +18,7 @@ class Solution:
         elif root2 is None:
             return root1
         else:
-            left = self.mergeTrees(root1.left, root2.left)
-            right = self.mergeTrees(root1.right, root2.right)
-            val = root1.val + root2.val
-            node = TreeNode(val, left, right)
+            node = TreeNode(root1.val + root2.val)
+            node.left = self.mergeTrees(root1.left, root2.left)
+            node.right = self.mergeTrees(root1.right, root2.right)
             return node

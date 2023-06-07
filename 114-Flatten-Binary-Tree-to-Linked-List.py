@@ -15,22 +15,18 @@ class Solution:
         Do not return anything, modify root in-place instead.
         """
         stack = list()
-
-        def dfs(node: TreeNode):
-            if node is None:
-                return
-            if node.right is not None:
+        node = root
+        while node is not None:
+            if node.left is None and node.right is None:
+                if len(stack) == 0:
+                    break
+                node.right = stack.pop()
+            elif node.left is not None and node.right is not None:
                 stack.append(node.right)
-            if node.left is not None:
                 node.right = node.left
                 node.left = None
-            else:
-                if len(stack) > 0:
-                    node.right = stack.pop()
-                else:
-                    node.right = None
-            dfs(node.right)
-
-        if root is None:
-            return None
-        dfs(root)
+            elif node.right is None:
+                node.right = node.left
+                node.left = None
+            node = node.right
+        return root

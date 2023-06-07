@@ -11,14 +11,11 @@ class TreeNode:
 
 class Solution:
     def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        return self.isSymmetric_(root.left, root.right)
 
-        def bfs(l: TreeNode, r: TreeNode) -> bool:
-            if l is None and r is None:
-                return True
-            elif l is None or r is None:
-                return False
-            elif l.val != r.val:
-                return False
-            return bfs(l.left, r.right) and bfs(l.right, r.left)
-
-        return bfs(root.left, root.right)
+    def isSymmetric_(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if p is None and q is None:
+            return True
+        if p is None or q is None or p.val != q.val:
+            return False
+        return self.isSymmetric_(p.left, q.right) and self.isSymmetric_(p.right, q.left)

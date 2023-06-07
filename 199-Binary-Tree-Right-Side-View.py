@@ -1,5 +1,4 @@
 from typing import Optional, List
-from collections import deque
 
 
 # Definition for a binary tree node.
@@ -12,18 +11,17 @@ class TreeNode:
 
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
-        queue = deque()
-        queue.append(root)
         output = list()
-        while len(queue) > 0:
-            num = len(queue)
-            val = 0
-            for i in range(num):
-                node = queue.popleft()
-                if node is None:
-                    continue
-                val = node.val
-                queue.append(node.left)
-                queue.append(node.right)
-            output.append(val)
-        return output[:-1]
+        if root is None:
+            return output
+        stack = [root]
+        while len(stack) > 0:
+            row = list()
+            output.append(stack[-1].val)
+            for node in stack:
+                if node.left is not None:
+                    row.append(node.left)
+                if node.right is not None:
+                    row.append(node.right)
+            stack = row
+        return output

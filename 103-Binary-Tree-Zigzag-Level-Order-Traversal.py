@@ -1,5 +1,4 @@
 from typing import Optional, List
-from collections import deque
 
 
 # Definition for a binary tree node.
@@ -13,20 +12,24 @@ class TreeNode:
 class Solution:
     def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         output = list()
-        queue = deque()
-        queue.append(root)
-        i = 1
+        if root is None:
+            return output
+        queue = [root]
+        i = 0
         while len(queue) > 0:
             level = list()
-            for j in range(len(queue)):
-                node = queue.popleft()
-                if node is not None:
-                    level.append(node.val)
-                    queue.append(node.left)
-                    queue.append(node.right)
-            if i % 2 == 0:
-                level.reverse()
+            vals = list()
+            for node in queue:
+                vals.append(node.val)
+                if node.left is not None:
+                    level.append(node.left)
+                if node.right is not None:
+                    level.append(node.right)
+            queue = level
+            if len(vals) > 0:
+                if i % 2 == 1:
+                    output.append(vals[::-1])
+                else:
+                    output.append(vals)
             i += 1
-            if len(level) > 0:
-                output.append(level)
         return output

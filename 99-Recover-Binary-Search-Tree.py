@@ -14,17 +14,25 @@ class Solution:
         """
         Do not return anything, modify root in-place instead.
         """
-        nodes = list()
+        vals = list()
 
-        def traverse(node: TreeNode):
+        def dfs(node: Optional[TreeNode]):
             if node is None:
                 return
-            traverse(node.left)
-            nodes.append(node)
-            traverse(node.right)
+            dfs(node.left)
+            vals.append(node.val)
+            dfs(node.right)
 
-        traverse(root)
-        vals = [node.val for node in nodes]
+        dfs(root)
         vals.sort()
-        for i, val in enumerate(vals):
-            nodes[i].val = val
+        stack = list()
+        node = root
+        i = 0
+        while node is not None or len(stack) > 0:
+            while node is not None:
+                stack.append(node)
+                node = node.left
+            node = stack.pop()
+            node.val = vals[i]
+            node = node.right
+            i += 1

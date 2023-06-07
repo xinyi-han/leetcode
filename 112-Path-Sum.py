@@ -12,25 +12,17 @@ class TreeNode:
 class Solution:
     def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
 
-        def dfs(node: TreeNode, sum: int) -> bool:
-            val = node.val
-            l = False
-            r = False
+        def dfs(node: Optional[TreeNode], remain: int) -> bool:
+            if node is None:
+                return False
             if node.left is None and node.right is None:
-                if sum + val == targetSum:
+                if remain == node.val:
                     return True
                 return False
-            elif node.left is None:
-                r = dfs(node.right, sum + val)
-            elif node.right is None:
-                l = dfs(node.left, sum + val)
-            else:
-                l = dfs(node.left, sum + val)
-                r = dfs(node.right, sum + val)
-            if l or r:
+            if dfs(node.left, remain - node.val):
+                return True
+            if dfs(node.right, remain - node.val):
                 return True
             return False
 
-        if root is None:
-            return False
-        return dfs(root, 0)
+        return dfs(root, targetSum)
