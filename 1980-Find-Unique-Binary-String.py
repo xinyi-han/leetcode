@@ -1,23 +1,22 @@
-from typing import List
+from typing import List, Optional
 
 
 class Solution:
     def findDifferentBinaryString(self, nums: List[str]) -> str:
-        n = len(nums)
+        stack = list()
+        length = len(nums[0])
         nums = set(nums)
-        self.output = None
 
-        def dfs(s: str) -> bool:
-            if len(s) == n:
-                if s in nums:
-                    nums.remove(s)
-                    return False
-                self.output = s
-                return True
-            for char in ["0", "1"]:
-                if dfs(s + char):
-                    return True
-            return False
+        def dfs(i: int) -> Optional[str]:
+            if i == length:
+                s = "".join(stack)
+                return s if s not in nums else None
+            for char in "01":
+                stack.append(char)
+                result = dfs(i + 1)
+                if result is not None:
+                    return result
+                stack.pop()
+            return None
 
-        dfs("")
-        return self.output
+        return dfs(0)

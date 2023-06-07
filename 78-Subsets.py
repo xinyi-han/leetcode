@@ -3,16 +3,16 @@ from typing import List
 
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        output = [[]]
-        stack = list()
-        i = 0
-        while True:
-            for num in nums[i:]:
-                stack.append(num)
+        output, stack = list(),list()
+
+        def dfs(i: int):
+            if i == len(nums):
                 output.append(list(stack))
+                return
+            stack.append(nums[i])
+            dfs(i + 1)
             stack.pop()
-            if len(stack) == 0:
-                break
-            num = stack.pop()
-            i = nums.index(num) + 1
+            dfs(i + 1)
+
+        dfs(0)
         return output

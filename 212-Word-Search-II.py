@@ -1,63 +1,60 @@
-from typing import List, Tuple
+from typing import List
 
 
 class TrieNode:
     def __init__(self):
         self.children = dict()
         self.isEnd = False
-        self.count = 0
+        self.times = 0
 
-    def buildTrie(self, word: str):
-        node = self
-        node.count += 1
+    def add(self, word: str):
+        root = self
+        root.times += 1
         for char in word:
-            if char not in node.children:
-                node.children[char] = TrieNode()
-            node = node.children[char]
-            node.count += 1
-        node.isEnd = True
+            if char not in root.children:
+                root.children[char] = TrieNode()
+            root = root.children[char]
+            root.times += 1
+        root.isEnd = True
 
     def prune(self, word: str):
-        node = self
-        node.count -= 1
+        root = self
+        root.times -= 1
         for char in word:
-            node = node.children[char]
-            node.count -= 1
+            root = root.children[char]
+            root.times -= 1
 
 
 class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         root = TrieNode()
         for word in words:
-            root.buildTrie(word)
-
+            root.add(word)
         m = len(board)
         n = len(board[0])
-        directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
-        output = list() # set()
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         visit = set()
+        output = list()
 
-        def dfs(pos: Tuple[int, int], node: TrieNode, word: str):
+        def dfs(x: int, y: int, node: TrieNode, word: str):
             if node.isEnd:
-                output.append(word) # output.add(word)
-                # avoid Time Limit Exceeded
+                output.append(word)
                 node.isEnd = False
                 root.prune(word)
             for dx, dy in directions:
-                x, y = pos
-                x += dx
-                y += dy
-                if 0 <= x < m and 0 <= y < n and (x, y) not in visit and board[x][y] in node.children and node.children[board[x][y]].count >= 1:
-                    visit.add((x, y))
-                    char = board[x][y]
-                    dfs((x, y), node.children[char], word + char)
-                    visit.remove((x, y))
+                X = x + dx
+                Y = y + dy
+                if 0 <= X < m and 0 <= Y < n and (X, Y) not in visit and board[X][Y] in node.children and node.children[board[X][Y]].times > 0:
+                    visit.add((X, Y))
+                    letter = board[X][Y]
+                    dfs(X, Y, node.children[letter], word + letter)
+                    visit.remove((X, Y))
 
-        for i in range(m):
-            for j in range(n):
-                char = board[i][j]
-                if char in root.children and root.children[char].count >= 1:
-                    visit.add((i, j))
-                    dfs((i, j), root.children[char], char)
-                    visit.remove((i, j))
-        return output # list(output)
+        for r in range(m):
+            for c in range(n):
+                char = board[r][c]
+                if char in root.children and root.children[char].times > 0:
+                    visit.add((r, c))
+                    dfs(r, c, root.children[char], char)
+                    visit.remove((r, c))
+        return output

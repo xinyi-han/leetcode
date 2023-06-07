@@ -6,18 +6,20 @@ class Solution:
         hashMap = dict()
         for num in nums:
             hashMap[num] = hashMap.get(num, 0) + 1
-        hashSet = set(nums)
-        output = [[num] for num in hashSet]
-        while len(output[0]) != len(nums):
-            temp = set()
-            for comb in output:
-                copy = dict(hashMap)
-                for num in comb:
-                    copy[num] -= 1
-                    if copy[num] == 0:
-                        copy.pop(num)
-                for num in copy:
-                    temp.add(tuple(comb + [num]))
-            temp = [list(tpl) for tpl in temp]
-            output = temp
+        output = list()
+        stack = list()
+
+        def dfs():
+            if len(stack) == len(nums):
+                output.append(list(stack))
+                return
+            for num in hashMap:
+                if hashMap[num] > 0:
+                    hashMap[num] -= 1
+                    stack.append(num)
+                    dfs()
+                    hashMap[num] += 1
+                    stack.pop()
+
+        dfs()
         return output

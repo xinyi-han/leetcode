@@ -3,16 +3,21 @@ from typing import List
 
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        nums.sort()
-        nums = set(nums)
-        output = [[num] for num in nums]
-        while len(output[0]) != len(nums):
-            temp = list()
-            for comb in output:
-                copy = set(nums)
-                for num in comb:
-                    copy.remove(num)
-                for num in copy:
-                    temp.append(comb + [num])
-            output = temp
+        hashMap = {num: 1 for num in nums}
+        output = list()
+        stack = list()
+
+        def dfs():
+            if len(stack) == len(nums):
+                output.append(list(stack))
+                return
+            for num in nums:
+                if hashMap[num] > 0:
+                    hashMap[num] -= 1
+                    stack.append(num)
+                    dfs()
+                    hashMap[num] += 1
+                    stack.pop()
+
+        dfs()
         return output

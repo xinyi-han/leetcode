@@ -3,26 +3,25 @@ from typing import List
 
 class Solution:
     def maxLength(self, arr: List[str]) -> int:
+        stack = list()
         self.maxLen = 0
-        hashSet = set()
+
+        def isUnique() -> bool:
+            s = "".join(stack)
+            if len(s) == len(set(s)):
+                self.maxLen = max(self.maxLen, len(s))
+                return True
+            return False
 
         def dfs(i: int):
-            length = len(hashSet)
-            if i == len(arr):
-                self.maxLen = max(self.maxLen, length)
+            if len(stack) > 0 and not isUnique():
                 return
-            for j in range(i, len(arr)):
-                for k, char in enumerate(arr[j]):
-                    if char in hashSet:
-                        self.maxLen = max(self.maxLen, length)
-                        for char in arr[j][:k]:
-                            hashSet.remove(char)
-                        break
-                    hashSet.add(char)
-                else:
-                    dfs(j + 1)
-                    for char in arr[j]:
-                        hashSet.remove(char)
+            if i == len(arr):
+                return
+            stack.append(arr[i])
+            dfs(i + 1)
+            stack.pop()
+            dfs(i + 1)
 
         dfs(0)
         return self.maxLen
