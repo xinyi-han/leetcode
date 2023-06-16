@@ -3,16 +3,22 @@ from typing import List
 
 class Solution:
     def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
-        num = 0
-        prev = 0
-        for i in range(len(flowerbed) - 1):
-            curr = flowerbed[i]
-            next = flowerbed[i+1]
-            if prev == 0 and next == 0 and curr == 0:
-                num += 1
-                prev = 1
+        if len(flowerbed) == 1:
+            if flowerbed[0] == 1 and n == 0:
+                return True
+            elif flowerbed[0] == 0 and n <= 1:
+                return True
             else:
-                prev = curr
-        if prev == 0 and flowerbed[-1] == 0:
-            num += 1
-        return num >= n
+                return False
+        if flowerbed[0] == 0 and flowerbed[1] == 0:
+            flowerbed[0] = 1
+            n -= 1
+        for i in range(1, len(flowerbed) - 1):
+            if flowerbed[i] == 0 and flowerbed[i-1] == 0 and flowerbed[i+1] == 0:
+                flowerbed[i] = 1
+                n -= 1
+            if n <= 0:
+                return True
+        if flowerbed[-1] == 0 and flowerbed[-2] == 0:
+            n -= 1
+        return n == 0
