@@ -10,10 +10,8 @@ class ListNode:
 
 class Solution:
     def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        dummy1 = ListNode()
-        odd = dummy1
-        dummy2 = ListNode()
-        even = dummy2
+        dummy1, dummy2 = ListNode(), ListNode()
+        odd, even = dummy1, dummy2
         i = 1
         while head is not None:
             if i % 2 == 1:
