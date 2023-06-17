@@ -3,16 +3,11 @@ from typing import List
 
 class Solution:
     def pivotIndex(self, nums: List[int]) -> int:
-        if len(nums) == 1:
-            return 0
-        left = 0
-        right = sum(nums[1:])
-        for i in range(len(nums) - 1):
-            if left == right:
+        l = 0
+        r = sum(nums)
+        for i, num in enumerate(nums):
+            r -= num
+            if l == r:
                 return i
-            left += nums[i]
-            right -= nums[i+1]
-        if left == right:
-            return len(nums) - 1
-        else:
-            return -1
+            l += num
+        return -1
