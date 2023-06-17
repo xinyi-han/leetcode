@@ -11,8 +11,7 @@ class ListNode:
 # Iterative
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        prev = None
-        curr = head
+        prev, curr = None, head
         while curr is not None:
             next = curr.next
             curr.next = prev
@@ -26,16 +25,13 @@ class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         dummy = ListNode()
 
-        def dfs(node: ListNode) -> Optional[ListNode]:
-            if node.next is None:
-                dummy.next = node
-                return node
+        def dfs(node: Optional[ListNode]):
+            if node is None:
+                return dummy
             prev = dfs(node.next)
             prev.next = node
             return node
 
-        if head is None:
-            return head
         tail = dfs(head)
         tail.next = None
         return dummy.next
