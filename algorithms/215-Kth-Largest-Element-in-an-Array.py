@@ -1,14 +1,14 @@
-from typing import List
 import heapq
+from typing import List
 
 
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
-        k = len(nums) - k + 1
+        nums = list(map(lambda num: -1 * num, nums))
         heapq.heapify(nums)
         i = 0
-        num = None
+        num = 0
         while i < k:
             num = heapq.heappop(nums)
             i += 1
-        return num
+        return -1 * num
