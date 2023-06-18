@@ -11,17 +11,17 @@ class TreeNode:
 
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
-        output = list()
         if root is None:
-            return output
-        stack = [root]
-        while len(stack) > 0:
-            row = list()
-            output.append(stack[-1].val)
-            for node in stack:
+            return []
+        nodes = [root]
+        output = list()
+        while len(nodes) > 0:
+            queue = list()
+            for node in nodes:
                 if node.left is not None:
-                    row.append(node.left)
+                    queue.append(node.left)
                 if node.right is not None:
-                    row.append(node.right)
-            stack = row
+                    queue.append(node.right)
+            output.append(nodes[-1].val)
+            nodes = queue
         return output
