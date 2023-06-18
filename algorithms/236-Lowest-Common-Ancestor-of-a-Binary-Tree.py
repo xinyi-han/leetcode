@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 # Definition for a binary tree node.
 class TreeNode:
     def __init__(self, x):
@@ -10,22 +13,15 @@ class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         self.ancestor = None
 
-        def traverse(node: 'TreeNode', i: 'TreeNode', j: 'TreeNode') -> bool:
+        def dfs(node: Optional[TreeNode]) -> bool:
             if node is None or self.ancestor is not None:
                 return False
-            left = traverse(node.left, i, j)
-            right = traverse(node.right, i, j)
-            if node == i or node == j:
-                if not left and not right:
-                    return True
-                elif left or right:
-                    self.ancestor = node
-                    return False
-            elif left and right:
+            l = dfs(node.left)
+            r = dfs(node.right)
+            if ((l and r) or ((l or r) and node in {p, q})):
                 self.ancestor = node
                 return False
-            elif left or right:
-                return True
+            return l or r or node in {p, q}
 
-        traverse(root, p, q)
+        dfs(root)
         return self.ancestor
