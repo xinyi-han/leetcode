@@ -3,19 +3,21 @@ from typing import List
 
 class Solution:
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        nums = list(range(1, 10))
+        stack = list()
         output = list()
 
-        def backtrack(stack: List[int]):
+        def dfs(i: int, sum: int):
             if len(stack) == k:
-                if sum(stack) == n:
+                if sum == n:
                     output.append(list(stack))
                 return
-            last = stack[-1]
-            for j in range(last + 1, 10):
-                stack.append(j)
-                backtrack(stack)
+            if i == len(nums):
+                return
+            for j in range(i, len(nums)):
+                stack.append(nums[j])
+                dfs(j + 1, sum + nums[j])
                 stack.pop()
 
-        for i in range(1, 10):
-            backtrack([i])
+        dfs(0, 0)
         return output
