@@ -6,7 +6,7 @@ class StockSpanner:
     def next(self, price: int) -> int:
         span = 1
         while len(self.stack) > 0 and price >= self.stack[-1][0]:
-            p, s = self.stack.pop()
-            span += s
+            p, c = self.stack.pop()
+            span += c
         self.stack.append((price, span))
         return span
