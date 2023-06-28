@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional
 
 
 # Definition for a binary tree node.
@@ -11,11 +11,16 @@ class TreeNode:
 
 class Solution:
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
-        def isBalanced_(node: Optional[TreeNode]) -> Tuple[int, bool]:
+
+        def dfs(node: Optional[TreeNode]):
             if node is None:
                 return 0, True
-            lh, lf = isBalanced_(node.left)
-            rh, rf = isBalanced_(node.right)
-            return max(lh, rh) + 1, (lf and rf and abs(lh - rh) <= 1)
+            l, lf = dfs(node.left)
+            if not lf:
+                return 0, False
+            r, rf = dfs(node.right)
+            if not rf:
+                return 0, False
+            return max(l, r) + 1, abs(l - r) <= 1
 
-        return isBalanced_(root)[1]
+        return dfs(root)[1]

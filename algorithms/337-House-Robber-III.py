@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional
 
 
 # Definition for a binary tree node.
@@ -12,14 +12,11 @@ class TreeNode:
 class Solution:
     def rob(self, root: Optional[TreeNode]) -> int:
 
-        def dfs(node: Optional[TreeNode]) -> Tuple[int, int]:
+        def dfs(node: Optional[TreeNode]):
             if node is None:
                 return 0, 0
             wl, wol = dfs(node.left)
             wr, wor = dfs(node.right)
-            w = wol + wor + node.val
-            wo = max(wl, wol) + max(wr, wor)
-            return w, wo
+            return node.val + wol + wor, max(wl, wol) + max(wr, wor)
 
-        w, wo = dfs(root)
-        return max(w, wo)
+        return max(dfs(root))

@@ -5,6 +5,7 @@ class TreeNode(object):
         self.left = None
         self.right = None
 
+
 class Codec:
 
     def serialize(self, root):
@@ -14,19 +15,19 @@ class Codec:
         :rtype: str
         """
         output = list()
-        queue = [root]
-        while len(queue) > 0:
-            row = list()
+        nodes = [root]
+        while len(nodes) > 0:
+            queue = list()
             vals = list()
-            for node in queue:
+            for node in nodes:
                 if node is None:
                     vals.append("#")
                 else:
                     vals.append(str(node.val))
-                    row.append(node.left)
-                    row.append(node.right)
+                    queue.append(node.left)
+                    queue.append(node.right)
             output.append(",".join(vals))
-            queue = row
+            nodes = queue
         return "/".join(output)
 
     def deserialize(self, data):
@@ -39,21 +40,21 @@ class Codec:
             return None
         data = data.split("/")
         data = list(map(lambda x: x.split(","), data))
-        val = int(data[0][0])
-        root = TreeNode(val)
-        level = [root]
-        for i in range(1, len(data)):
-            row = list()
-            for j, node in enumerate(level):
-                if data[i][2 * j] != "#":
-                    val = int(data[i][2 * j])
-                    left = TreeNode(val)
-                    node.left = left
-                    row.append(left)
-                if data[i][2 * j + 1] != "#":
-                    val = int(data[i][2 * j + 1])
-                    right = TreeNode(val)
-                    node.right = right
-                    row.append(right)
-            level = row
+        root = TreeNode(int(data[0][0]))
+        nodes = [root]
+        i = 1
+        while i < len(data):
+            queue = list()
+            for j, node in enumerate(nodes):
+                l, r = data[i][2 * j], data[i][2 * j + 1]
+                if l != "#":
+                    l = TreeNode(int(l))
+                    node.left = l
+                    queue.append(l)
+                if r != "#":
+                    r = TreeNode(int(r))
+                    node.right = r
+                    queue.append(r)
+            i += 1
+            nodes = queue
         return root

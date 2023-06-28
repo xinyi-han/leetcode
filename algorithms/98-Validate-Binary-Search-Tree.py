@@ -12,11 +12,11 @@ class TreeNode:
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
 
-        def dfs(node: Optional[TreeNode], left: float, right: float) -> bool:
+        def dfs(node: Optional[TreeNode], lb: int, rb: int) -> bool:
             if node is None:
                 return True
-            if not left < node.val < right:
+            if not lb < node.val < rb:
                 return False
-            return dfs(node.left, left, node.val) and dfs(node.right, node.val, right)
+            return dfs(node.left, lb, node.val) and dfs(node.right, node.val, rb)
 
         return dfs(root, float('-inf'), float('inf'))

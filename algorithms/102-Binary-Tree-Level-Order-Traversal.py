@@ -14,17 +14,17 @@ class Solution:
         output = list()
         if root is None:
             return output
-        queue = [root]
-        while len(queue) > 0:
-            level = list()
+        nodes = [root]
+        while len(nodes) > 0:
+            queue = list()
             vals = list()
-            for node in queue:
+            for node in nodes:
                 vals.append(node.val)
                 if node.left is not None:
-                    level.append(node.left)
+                    queue.append(node.left)
                 if node.right is not None:
-                    level.append(node.right)
-            queue = level
+                    queue.append(node.right)
             if len(vals) > 0:
                 output.append(vals)
+            nodes = queue
         return output

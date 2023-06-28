@@ -11,18 +11,19 @@ class TreeNode:
 
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        pair = [0, 0] # [index, value]
+        vals = list()
 
-        def inOrder(node: Optional[TreeNode]):
+        def inorder(node: Optional[TreeNode]) -> bool:
+            if len(vals) == k:
+                return True
             if node is None:
-                return
-            if pair[0] >= k:
-                return
-            inOrder(node.left)
-            if pair[0] < k:
-                pair[0] += 1
-                pair[1] = node.val
-            inOrder(node.right)
+                return False
+            if inorder(node.left):
+                return True
+            vals.append(node.val)
+            if inorder(node.right):
+                return True
+            return False
 
-        inOrder(root)
-        return pair[-1]
+        inorder(root)
+        return vals[-1]
