@@ -7,25 +7,23 @@ class Solution:
         n = len(board[0])
         visit = set()
 
-        def dfs(i: int, x: int, y: int) -> bool:
-            if i == len(word):
+        def dfs(i: int, j: int, k: int) -> bool:
+            if k == len(word):
                 return True
-            if not 0 <= x < m or not 0 <= y < n or board[x][y] != word[i] or (x, y) in visit:
+            if (not 0 <= i < m or
+                not 0 <= j < n or
+                (i, j) in visit or
+                board[i][j] != word[k]):
                 return False
-            visit.add((x, y))
-            if dfs(i + 1, x - 1, y):
-                return True
-            if dfs(i + 1, x + 1, y):
-                return True
-            if dfs(i + 1, x, y - 1):
-                return True
-            if dfs(i + 1, x, y + 1):
-                return True
-            visit.remove((x, y))
+            visit.add((i, j))
+            for di, dj in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                if dfs(i + di, j + dj, k + 1):
+                    return True
+            visit.remove((i, j))
             return False
 
-        for r in range(m):
-            for c in range(n):
-                if dfs(0, r, c):
+        for i in range(m):
+            for j in range(n):
+                if dfs(i, j, 0):
                     return True
         return False

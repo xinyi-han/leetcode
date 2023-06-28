@@ -3,25 +3,23 @@ from typing import List
 
 class Solution:
     def maxLength(self, arr: List[str]) -> int:
+        output = 0
         stack = list()
-        self.maxLen = 0
-
-        def isUnique() -> bool:
-            s = "".join(stack)
-            if len(s) == len(set(s)):
-                self.maxLen = max(self.maxLen, len(s))
-                return True
-            return False
 
         def dfs(i: int):
-            if len(stack) > 0 and not isUnique():
-                return
+            nonlocal output
             if i == len(arr):
+                s = "".join(stack)
+                output = max(output, len(s))
                 return
-            stack.append(arr[i])
-            dfs(i + 1)
-            stack.pop()
+            if self.is_unique("".join(stack) + arr[i]):
+                stack.append(arr[i])
+                dfs(i + 1)
+                stack.pop()
             dfs(i + 1)
 
         dfs(0)
-        return self.maxLen
+        return output
+
+    def is_unique(self, s: str) -> bool:
+        return len(s) == len(set(s))

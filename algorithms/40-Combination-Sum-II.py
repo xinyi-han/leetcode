@@ -10,7 +10,7 @@ class Solution:
         def dfs(i: int, sum: int):
             if sum == target:
                 output.append(list(stack))
-            if sum >= target or i == len(candidates):
+            if i == len(candidates) or sum >= target:
                 return
             stack.append(candidates[i])
             dfs(i + 1, sum + candidates[i])

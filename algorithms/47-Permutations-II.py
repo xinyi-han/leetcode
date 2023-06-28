@@ -9,17 +9,18 @@ class Solution:
         output = list()
         stack = list()
 
-        def dfs():
-            if len(stack) == len(nums):
+        def dfs(i: int):
+            if i == len(nums):
                 output.append(list(stack))
                 return
-            for num in hashMap:
-                if hashMap[num] > 0:
-                    hashMap[num] -= 1
-                    stack.append(num)
-                    dfs()
-                    hashMap[num] += 1
-                    stack.pop()
+            for num, c in hashMap.items():
+                if c == 0:
+                    continue
+                stack.append(num)
+                hashMap[num] -= 1
+                dfs(i + 1)
+                stack.pop()
+                hashMap[num] += 1
 
-        dfs()
+        dfs(0)
         return output

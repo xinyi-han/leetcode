@@ -1,24 +1,26 @@
 class Solution:
     def totalNQueens(self, n: int) -> int:
-        col = set()
-        diagP = set()
+        output = 0
+        cols = set()
         diagN = set()
-        self.output = 0
+        diagP = set()
 
-        def dfs(r: int):
-            if r == n:
-                self.output += 1
+        def dfs(i: int):
+            nonlocal output
+            if i == n:
+                output += 1
                 return
-            for c in range(n):
-                if c in col or (r + c) in diagP or (r - c) in diagN:
-                    continue
-                col.add(c)
-                diagP.add(r + c)
-                diagN.add(r - c)
-                dfs(r + 1)
-                col.remove(c)
-                diagP.remove(r + c)
-                diagN.remove(r - c)
+            for j in range(n):
+                if (j not in cols and
+                    i + j not in diagP and
+                    i - j not in diagN):
+                    cols.add(j)
+                    diagP.add(i + j)
+                    diagN.add(i - j)
+                    dfs(i + 1)
+                    cols.remove(j)
+                    diagP.remove(i + j)
+                    diagN.remove(i - j)
 
         dfs(0)
-        return self.output
+        return output

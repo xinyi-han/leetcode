@@ -3,29 +3,29 @@ from typing import List
 
 class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
+        board = [['.' for _ in range(n)] for _ in range(n)]
+        cols = set()
+        diagP = set()
+        diagN = set()
         output = list()
-        board = [["." for _ in range(n)] for _ in range(n)]
-        col = set()
-        diagP = set() # r + c
-        diagN = set() # r - c
 
-        def dfs(r: int):
-            if r == n:
-                result = ["".join(row) for row in board]
-                output.append(result)
+        def dfs(i: int):
+            if i == n:
+                output.append(["".join(r) for r in board])
                 return
-            for c in range(n):
-                if c in col or (r + c) in diagP or (r - c) in diagN:
-                    continue
-                col.add(c)
-                diagP.add(r + c)
-                diagN.add(r - c)
-                board[r][c] = "Q"
-                dfs(r + 1)
-                col.remove(c)
-                diagP.remove(r + c)
-                diagN.remove(r - c)
-                board[r][c] = "."
+            for j in range(n):
+                if (j not in cols and
+                    i - j not in diagN and
+                    i + j not in diagP):
+                    board[i][j] = 'Q'
+                    cols.add(j)
+                    diagN.add(i - j)
+                    diagP.add(i + j)
+                    dfs(i + 1)
+                    board[i][j] = '.'
+                    cols.remove(j)
+                    diagN.remove(i - j)
+                    diagP.remove(i + j)
 
         dfs(0)
         return output

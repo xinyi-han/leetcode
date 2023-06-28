@@ -11,17 +11,15 @@ class Solution:
                 if i == len(s):
                     output.append(".".join(stack))
                 return
-            for j in range(i, min(i + 3, len(s))):
-                address = s[i:j+1]
-                if address[0] == "0":
-                    stack.append("0")
-                    dfs(i + 1)
-                    stack.pop()
+            for j in range(i, min(len(s), i + 3)):
+                digits = s[i:j + 1]
+                if int(digits) > 255:
                     break
-                if int(address) <= 255:
-                    stack.append(address)
-                    dfs(j + 1)
-                    stack.pop()
+                stack.append(digits)
+                dfs(j + 1)
+                stack.pop()
+                if digits == "0":
+                    break
 
         dfs(0)
         return output
