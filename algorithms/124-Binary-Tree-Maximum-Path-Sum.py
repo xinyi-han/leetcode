@@ -11,17 +11,18 @@ class TreeNode:
 
 class Solution:
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
-        self.maxSum = root.val
+        pathSum = float('-inf')
 
-        def dfs(node: Optional[TreeNode]) -> int:
+        def dfs(node: Optional[TreeNode]):
+            nonlocal pathSum
             if node is None:
                 return 0
             l = dfs(node.left)
             l = max(l, 0)
             r = dfs(node.right)
             r = max(r, 0)
-            self.maxSum = max(self.maxSum, l + r + node.val)
+            pathSum = max(pathSum, l + r + node.val)
             return max(l, r) + node.val
 
         dfs(root)
-        return self.maxSum
+        return pathSum
