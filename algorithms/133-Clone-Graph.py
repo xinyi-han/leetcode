@@ -6,22 +6,16 @@ class Node:
 
 
 class Solution:
-    def cloneGraph(self, node: Node) -> Node:
-        if node is None:
-            return None
-        nodes = dict()
-        stack = list()
-        stack.append(node)
-        while len(stack) > 0:
-            node = stack.pop()
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        hashMap = dict()
+
+        def dfs(node: Node) -> Node:
+            if node in hashMap:
+                return hashMap[node]
             copy = Node(node.val)
-            nodes[node.val] = copy
+            hashMap[node] = copy
             for neighbor in node.neighbors:
-                if neighbor.val in nodes:
-                    copy.neighbors.append(nodes[neighbor.val])
-                    nodes[neighbor.val].neighbors.append(copy)
-                    continue
-                stack = set(stack)
-                stack.add(neighbor)
-                stack = list(stack)
-        return nodes[1]
+                copy.neighbors.append(dfs(neighbor))
+            return copy
+
+        return dfs(node) if node is not None else None

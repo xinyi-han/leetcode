@@ -1,28 +1,28 @@
-from typing import List, Tuple, Set
+from typing import List
 
 
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        m = len(grid)
-        n = len(grid[0])
-        lands = set()
+        m, n = len(grid), len(grid[0])
+        visit = set()
+        island = 0
+
+        def dfs(i: int, j: int):
+            if (not 0 <= i < m or
+                not 0 <= j < n or
+                ((i, j) in visit)):
+                return
+            visit.add((i, j))
+            if grid[i][j] == "0":
+                return
+            for di, dj in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                dfs(i + di, j + dj)
+
         for i in range(m):
             for j in range(n):
-                if grid[i][j] == "1":
-                    lands.add((i, j))
-        islands = 0
-        while len(lands) > 0:
-            copy = list(lands)
-            self.dfs(copy[0], lands)
-            islands += 1
-        return islands
-
-    def dfs(self, land: Tuple[int, int], lands: Set[Tuple[int, int]]):
-        if land not in lands:
-            return
-        x, y = land
-        lands.remove(land)
-        self.dfs((x + 1, y), lands)
-        self.dfs((x - 1, y), lands)
-        self.dfs((x, y + 1), lands)
-        self.dfs((x, y - 1), lands)
+                if (i, j) in visit or grid[i][j] == "0":
+                    continue
+                else:
+                    island += 1
+                    dfs(i, j)
+        return island
