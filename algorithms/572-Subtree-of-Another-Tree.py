@@ -11,27 +11,16 @@ class TreeNode:
 
 class Solution:
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
-
-        def isSame(node1: Optional[TreeNode], node2: Optional[TreeNode]) -> bool:
-            if node1 is None and node2 is None:
-                return True
-            elif node1 is None or node2 is None:
-                return False
-            elif node1.val != node2.val:
-                return False
-            else:
-                return isSame(node1.left, node2.left) and isSame(node1.right, node2.right)
-
-        def dfs(node: Optional[TreeNode]) -> bool:
-            if node is None:
-                return False
-            if node.val == subRoot.val:
-                if isSame(node, subRoot):
-                    return True
-            if dfs(node.left):
-                return True
-            if dfs(node.right):
-                return True
+        if root is None:
             return False
+        if root.val == subRoot.val and self.isSameTree(root, subRoot):
+            return True
+        return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
 
-        return dfs(root)
+    def isSameTree(self, r1: Optional[TreeNode], r2: Optional[TreeNode]) -> bool:
+        if r1 is None and r2 is None:
+            return True
+        elif r1 is None or r2 is None or r1.val != r2.val:
+            return False
+        else:
+            return self.isSameTree(r1.left, r2.left) and self.isSameTree(r1.right, r2.right)
