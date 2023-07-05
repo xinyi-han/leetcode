@@ -11,20 +11,15 @@ class TreeNode:
 
 class Solution:
     def tree2str(self, root: Optional[TreeNode]) -> str:
-
-        def dfs(node: Optional[TreeNode]) -> str:
-            if node.left is None and node.right is None:
-                return "(" + str(node.val) + ")"
-            elif node.left is None:
-                r = dfs(node.right)
-                return "(" + str(node.val) + "()" + r + ")"
-            elif node.right is None:
-                l = dfs(node.left)
-                return "(" + str(node.val) + l + ")"
-            else:
-                l = dfs(node.left)
-                r = dfs(node.right)
-                return "(" + str(node.val) + l + r + ")"
-
-        s = dfs(root)
-        return s[1:-1]
+        if root is None:
+            return ""
+        l = self.tree2str(root.left)
+        r = self.tree2str(root.right)
+        if len(l) == 0 and len(r) == 0:
+            return f"{root.val}"
+        elif len(l) == 0:
+            return f"{root.val}()({r})"
+        elif len(r) == 0:
+            return f"{root.val}({l})"
+        else:
+            return f"{root.val}({l})({r})"
