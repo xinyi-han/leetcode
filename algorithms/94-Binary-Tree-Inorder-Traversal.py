@@ -12,17 +12,17 @@ class TreeNode:
 # Recursive
 class Solution:
     def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
-        output = list()
+        vals = list()
 
         def dfs(node: Optional[TreeNode]):
             if node is None:
                 return
             dfs(node.left)
-            output.append(node.val)
+            vals.append(node.val)
             dfs(node.right)
 
         dfs(root)
-        return output
+        return vals
 
 
 # Iterative
